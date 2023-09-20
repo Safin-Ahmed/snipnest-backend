@@ -1,0 +1,2006 @@
+openapi: 3.0.0
+info:
+  description: "This is a professional api project I am creating for our first assignment in full-stack army. This is a simple code-snippet sharing api application where anyone can create a new account, login to their system and create code snippets that will be visible publicly."
+  version: "1.0.0"
+  title: "SnipNest - Where Code Find It's Nest"
+  contact:
+    name: Safin Ahmed
+    url: https://safinahmed.netlify.app/
+    email: safin.ahmed2000@gmail.com
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/SAFINAHMED2000/SnipNest/1.0.0
+  - description: Dev Server
+    url: http://localhost:4000/api/v1
+tags:
+  - name: Auth
+    description: Authentication Endpoints (public)
+  - name: User
+    description: User Endpoints (admin + private)
+  - name: Profile
+    description: Profile Endpoints (public + private)
+  - name: Snippet
+    description: Snippet Endpoints (public + private)
+  - name: Snippet File
+    description: Snippet File Endpoints (public + private)
+  - name: Comment
+    description: Comments Endpoints (admin + private)
+  - name: Star
+    description: Stars Endpoints (admin + private)
+paths:
+  "/public/auth/register":
+    post:
+      description: create a new account
+      tags: [Auth]
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: safinahmed
+                email:
+                  type: string
+                  format: email
+                  example: safinahmed@gmail.com
+                password:
+                  type: string
+                  format: password
+                  example: password123
+              required: [username, email, password]
+      responses:
+        201:
+          description: Signup successful
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 201
+                  message:
+                    type: string
+                    example: Signup successful
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "asdasd123123asd"
+                      username:
+                        type: string
+                        example: "safinahmed2021"
+                      email:
+                        type: string
+                        example: "safinahmed@gmail.com"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/users/{user_id}"
+                      profile:
+                        type: string
+                        example: "/profiles/{user_id}"
+                      login:
+                        type: string
+                        example: "/auth/login"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+  "/public/auth/login":
+    post:
+      description: Login to your account
+      tags: [Auth]
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: safin@gmail.com
+                password:
+                  type: string
+                  format: password
+                  example: Password123
+              required: [email, password]
+      responses:
+        200:
+          description: "Login Successful"
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: "Login Successful"
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                      refresh_token:
+                        type: string
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/public/auth/login"
+                      refresh:
+                        type: string
+                        example: "/private/auth/token/refresh"
+                      revoke:
+                        type: string
+                        example: "/private/auth/token/revoke"
+                      validate:
+                        type: string
+                        example: "/private/auth/token/validate"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+  "/public/auth/token/refresh":
+    post:
+      description: "Refresh Access Token"
+      tags: [Auth]
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+              required: [token]
+      responses:
+        200:
+          description: Returns a new access token and refresh token
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Successfuly Refreshed Your Tokens
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                      refresh_token:
+                        type: string
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/auth/refresh"
+                      revoke:
+                        type: string
+                        example: "/auth/revoke"
+                      validity:
+                        type: string
+                        example: "/auth/validity"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+  "/private/auth/token/revoke":
+    post:
+      description: "Revoke Refresh Token"
+      tags: [Auth]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+              required: [token]
+      responses:
+        200:
+          description: Returns a new access token and refresh token
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Successfuly Revoked Your Token
+                  data:
+                    type: object
+                    properties:
+                      refresh_token:
+                        type: string
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/auth/revoke"
+                      login:
+                        type: string
+                        example: "/auth/login"
+        400:
+          $ref: "#/components/responses/400"
+        401:
+          $ref: "#/components/responses/401"
+        500:
+          $ref: "#/components/responses/500"
+  "/public/auth/token/validate":
+    post:
+      description: "Check the validity of your refresh token"
+      tags: [Auth]
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+              required: [token]
+      responses:
+        200:
+          description: Returns message and provided refresh token
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Token is valid
+                  data:
+                    type: object
+                    properties:
+                      refresh_token:
+                        type: string
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                      validity:
+                        type: boolean
+                        example: true
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/auth/token/validate"
+                      refresh:
+                        type: string
+                        example: "/auth/token/refresh"
+                      revoke:
+                        type: string
+                        example: "/auth/token/revoke"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+  "/public/profiles":
+    get:
+      operationId: findAllPost
+      description: "Retrieve all user profiles"
+      parameters:
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/limitParam"
+        - $ref: "#/components/parameters/sortParam"
+        - $ref: "#/components/parameters/searchParam"
+      responses:
+        200:
+          description: "Return a list of user profiles"
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: "#/components/schemas/ProfileDTO"
+                        - $ref: "#/components/schemas/Timestamp"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: url
+                        example: "/profiles?page=2&limit=10"
+                      next:
+                        type: string
+                        format: url
+                        example: "/profiles?page=3&limit=10"
+                      prev:
+                        type: string
+                        format: url
+                        example: "/profiles?page=1&limit=10"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+      tags:
+        - Profile
+  "/public/profiles/{id}":
+    get:
+      tags: [Profile]
+      description: Fetch a single profile
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+        - in: query
+          name: expand
+          description: expand profile object
+          schema:
+            type: string
+            example: "snippet, user"
+      responses:
+        200:
+          description: "Single Profile View"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/ProfileDTO"
+                      - $ref: "#/components/schemas/Timestamp"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/profiles/1"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+  "/private/profiles":
+    post:
+      operationId: createProfile
+      security:
+        - bearerAuth: []
+      tags: [Profile]
+      description: Create a new profile
+      requestBody:
+        description: To create a new profile, user must need to provide valid data
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  example: "123213sdasd"
+                job_title:
+                  type: string
+                  example: Fullstack Developer
+                bio:
+                  type: string
+                  example: this is what I do in my daily life
+              required: [user_id]
+
+      responses:
+        201:
+          description: Successfully created a new profile
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ProfileCreateDTO"
+        400:
+          $ref: "#/components/responses/400"
+        401:
+          $ref: "#/components/responses/401"
+        500:
+          $ref: "#/components/responses/500"
+  "/private/profiles/{id}":
+    patch:
+      security:
+        - bearerAuth: []
+      tags: [Profile]
+      description: "Partially update a profile"
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/ProfileRequestBody"
+      responses:
+        200:
+          description: "Successfully Updated"
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ProfileUpdateDTO"
+        400:
+          $ref: "#/components/responses/400"
+
+        401:
+          $ref: "#/components/responses/401"
+
+        404:
+          $ref: "#/components/responses/404"
+
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      security:
+        - bearerAuth: []
+      tags: [Profile]
+      description: Delete a Profile by id
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      responses:
+        204:
+          description: "Profile deleted successfully"
+        401:
+          $ref: "#/components/responses/401"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+  "/admin/users":
+    get:
+      operationId: findAllUsers
+      description: "Retrieve all users"
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/limitParam"
+        - $ref: "#/components/parameters/sortParam"
+        - $ref: "#/components/parameters/searchParam"
+      responses:
+        200:
+          description: "Return a list of users"
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: "#/components/schemas/UserDTO"
+                        - $ref: "#/components/schemas/Timestamp"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: url
+                        example: "/users?page=2&limit=10"
+                      next:
+                        type: string
+                        format: url
+                        example: "/users?page=3&limit=10"
+                      prev:
+                        type: string
+                        format: url
+                        example: "/users?page=1&limit=10"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+      tags:
+        - User
+    post:
+      operationId: createUser
+      security:
+        - bearerAuth: []
+      tags: [User]
+      description: Create a new user
+      requestBody:
+        description: To create a new user, the creator must need to provide valid data
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/UserRequestBody"
+
+      responses:
+        201:
+          description: Successfully created a new user
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/UserCreateDTO"
+        400:
+          $ref: "#/components/responses/400"
+        401:
+          $ref: "#/components/responses/401"
+        500:
+          $ref: "#/components/responses/500"
+  "/admin/users/{id}":
+    get:
+      tags: [User]
+      description: Fetch a single user
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      responses:
+        200:
+          description: "Single Profile View"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/UserDTO"
+                      - $ref: "#/components/schemas/Timestamp"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/users/1"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+
+  "/private/users/{id}":
+    patch:
+      security:
+        - bearerAuth: []
+      tags: [User]
+      description: "Partially update an user"
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/UserRequestBody"
+      responses:
+        200:
+          description: "Successfully Updated"
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/UserUpdateDTO"
+        400:
+          $ref: "#/components/responses/400"
+
+        401:
+          $ref: "#/components/responses/401"
+
+        404:
+          $ref: "#/components/responses/404"
+
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      security:
+        - bearerAuth: []
+      tags: [User]
+      description: Delete a User by id
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      responses:
+        204:
+          description: "User deleted successfully"
+        401:
+          $ref: "#/components/responses/401"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+  "/public/snippets":
+    get:
+      operationId: findAllSnippets
+      description: "Retrieve all snippets"
+      tags: [Snippet]
+      parameters:
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/limitParam"
+        - $ref: "#/components/parameters/sortParam"
+        - $ref: "#/components/parameters/searchParam"
+      responses:
+        200:
+          description: "Return a list of snippets"
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: "#/components/schemas/SnippetListDTO"
+                        - $ref: "#/components/schemas/Timestamp"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: url
+                        example: "/snippets?page=2&limit=10"
+                      next:
+                        type: string
+                        format: url
+                        example: "/snippets?page=3&limit=10"
+                      prev:
+                        type: string
+                        format: url
+                        example: "/snippets?page=1&limit=10"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+  "/public/snippets/{id}":
+    get:
+      tags: [Snippet]
+      description: Fetch a single snippet
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+        - in: query
+          name: expand
+          description: expand snippet object
+          schema:
+            type: string
+            example: "snipper, comments, snippet_files"
+        - in: query
+          name: fields
+          description: select specific fields of snippet
+          schema:
+            type: string
+            example: "tile, description, languages"
+      responses:
+        200:
+          description: "Single snippet View"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/SnippetDTO"
+                      - type: object
+                        properties:
+                          snipper:
+                            type: object
+                            properties:
+                              displayName:
+                                type: string
+                              jobTitle:
+                                type: string
+                              bio:
+                                type: string
+                              followerCount:
+                                type: number
+                                default: 0
+
+                      - $ref: "#/components/schemas/Timestamp"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/snippets/asdasd2131aasdadsd"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+  "/private/snippets":
+    post:
+      operationId: createSnippet
+      security:
+        - bearerAuth: []
+      tags: [Snippet]
+      description: Create a new snippet
+      requestBody:
+        description: To create a new snippet, user must need to provide valid data
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/SnippetRequest"
+      responses:
+        201:
+          description: Successfully created a new snippet
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SnippetCreateDTO"
+        400:
+          $ref: "#/components/responses/400"
+        401:
+          $ref: "#/components/responses/401"
+        500:
+          $ref: "#/components/responses/500"
+  "/private/snippets/{id}":
+    patch:
+      security:
+        - bearerAuth: []
+      tags: [Snippet]
+      description: "Partially update a snippet"
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/SnippetRequest"
+      responses:
+        200:
+          description: "Successfully Updated"
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SnippetUpdateDTO"
+        400:
+          $ref: "#/components/responses/400"
+
+        401:
+          $ref: "#/components/responses/401"
+
+        404:
+          $ref: "#/components/responses/404"
+
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      security:
+        - bearerAuth: []
+      tags: [Snippet]
+      description: Delete a Snippet by id
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      responses:
+        204:
+          description: "Snippet deleted successfully"
+        401:
+          $ref: "#/components/responses/401"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+  "/public/snippets/{id}/comments":
+    get:
+      operationId: getAllCommentsBySnippet
+      tags: [Snippet]
+      description: Fetch all the comments for a specific snippet by id
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/limitParam"
+        - $ref: "#/components/parameters/sortParam"
+        - $ref: "#/components/parameters/searchParam"
+      responses:
+        200:
+          description: "List of comments for a single snippet"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/CommentDTO"
+                      - $ref: "#/components/schemas/Timestamp"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/snippets/asdasd2131aasdadsd/comments?page=2&limit=10"
+                      prev:
+                        type: string
+                        example: "/snippets/asdasd2131aasdadsd/comments?page=1&limit=10"
+                      next:
+                        type: string
+                        example: "/snippets/asdasd2131aasdadsd/comments?page=3&limit=10"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+  "/private/snippets/{id}/comments":
+    post:
+      operationId: createCommentBySnippet
+      security:
+        - bearerAuth: []
+      tags: [Snippet]
+      description: Create a new comment for a snippet
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      requestBody:
+        description: To create a new comment for a snippet, user must need to provide valid data
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+              required: [content]
+      responses:
+        201:
+          description: Successfully created a new comment
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/CommentCreateDTO"
+        400:
+          $ref: "#/components/responses/400"
+        401:
+          $ref: "#/components/responses/401"
+        500:
+          $ref: "#/components/responses/500"
+  "/public/snippets/{id}/stars":
+    get:
+      operationId: getAllStarsBySnippet
+      tags: [Snippet]
+      description: Fetch all the stars for a specific snippet by id
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/limitParam"
+        - $ref: "#/components/parameters/sortParam"
+        - $ref: "#/components/parameters/searchParam"
+      responses:
+        200:
+          description: "List of stars for a single snippet"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/StarReactDTO"
+                      - $ref: "#/components/schemas/Timestamp"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/snippets/asdasd2131aasdadsd/stars?page=2&limit=10"
+                      prev:
+                        type: string
+                        example: "/snippets/asdasd2131aasdadsd/stars?page=1&limit=10"
+                      next:
+                        type: string
+                        example: "/snippets/asdasd2131aasdadsd/stars?page=3&limit=10"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+  "/private/snippets/{id}/stars":
+    post:
+      operationId: createStarBySnippet
+      security:
+        - bearerAuth: []
+      tags: [Snippet]
+      description: Create a new star for a snippet
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      requestBody:
+        description: To create a new star for a snippet, user must need to provide valid data
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                snippet_id:
+                  type: string
+                  example: "asdasdasd123123"
+                profile_id:
+                  type: string
+                  example: "asdadsasdasdsad"
+              required: [snippet_id, profile_id]
+      responses:
+        201:
+          description: Successfully created a new comment
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/CommentCreateDTO"
+        400:
+          $ref: "#/components/responses/400"
+        401:
+          $ref: "#/components/responses/401"
+        500:
+          $ref: "#/components/responses/500"
+  "/public/snippets/files":
+    get:
+      operationId: findAllSnippetFiles
+      description: "Retrieve all snippet files"
+      tags: [Snippet File]
+      parameters:
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/limitParam"
+        - $ref: "#/components/parameters/sortParam"
+        - $ref: "#/components/parameters/searchParam"
+      responses:
+        200:
+          description: "Return a list of snippet files"
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: "#/components/schemas/SnippetFileDTO"
+                        - $ref: "#/components/schemas/Timestamp"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: url
+                        example: "/snippets/files?page=2&limit=10"
+                      next:
+                        type: string
+                        format: url
+                        example: "/snippets/files?page=3&limit=10"
+                      prev:
+                        type: string
+                        format: url
+                        example: "/snippets/files?page=1&limit=10"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+  "/public/snippets/files/{id}":
+    get:
+      tags: [Snippet File]
+      operationId: getSingleSnippet
+      description: Fetch a single snippet file
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+        - in: query
+          name: expand
+          description: expand snippet file object
+          schema:
+            type: string
+            example: "snippet, profile"
+        - in: query
+          name: fields
+          description: select specific fields of snippet file
+          schema:
+            type: string
+            example: "filename, content, language"
+      responses:
+        200:
+          description: "Single snippet View"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/SnippetFileDTO"
+                      - $ref: "#/components/schemas/SnippetDTO"
+                      - $ref: "#/components/schemas/ProfileDTO"
+                      - $ref: "#/components/schemas/Timestamp"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/snippets/files/asdasd2131aasdadsd"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+  "/private/snippets/files":
+    post:
+      operationId: createSnippetFile
+      security:
+        - bearerAuth: []
+      tags: [Snippet File]
+      description: Create a new snippet file
+      requestBody:
+        description: To create a new snippet, user must need to provide valid data
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/SnippetFileRequestBody"
+      responses:
+        201:
+          description: Successfully created a new snippet file
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SnippetFileCreateDTO"
+        400:
+          $ref: "#/components/responses/400"
+        401:
+          $ref: "#/components/responses/401"
+        500:
+          $ref: "#/components/responses/500"
+  "/private/snippets/files/{id}":
+    patch:
+      security:
+        - bearerAuth: []
+      tags: [Snippet File]
+      description: "Partially update a snippet file"
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/SnippetFileRequestBody"
+      responses:
+        200:
+          description: "Successfully Updated"
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SnippetFileUpdateDTO"
+        400:
+          $ref: "#/components/responses/400"
+
+        401:
+          $ref: "#/components/responses/401"
+
+        404:
+          $ref: "#/components/responses/404"
+
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      security:
+        - bearerAuth: []
+      tags: [Snippet File]
+      description: Delete a snippet file by id
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      responses:
+        204:
+          description: "Snippet deleted successfully"
+        401:
+          $ref: "#/components/responses/401"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+  "/admin/comments":
+    get:
+      operationId: findAllComments
+      description: "Retrieve all comments"
+      parameters:
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/limitParam"
+        - $ref: "#/components/parameters/sortParam"
+        - $ref: "#/components/parameters/searchParam"
+      responses:
+        200:
+          description: "Return a list of comments"
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: "#/components/schemas/CommentDTO"
+                        - $ref: "#/components/schemas/Timestamp"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: url
+                        example: "/admin/comments?page=2&limit=10"
+                      next:
+                        type: string
+                        format: url
+                        example: "/admin/comments?page=3&limit=10"
+                      prev:
+                        type: string
+                        format: url
+                        example: "/admin/comments?page=1&limit=10"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+      tags:
+        - Comment
+    post:
+      operationId: createComment
+      security:
+        - bearerAuth: []
+      tags: [Comment]
+      description: Create a new comment
+      requestBody:
+        description: To create a new comment, the admin must need to provide valid data
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/CommentRequestBody"
+      responses:
+        201:
+          description: Successfully created a new comment
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/CommentCreateDTO"
+        400:
+          $ref: "#/components/responses/400"
+        401:
+          $ref: "#/components/responses/401"
+        500:
+          $ref: "#/components/responses/500"
+  "/private/comments/{id}":
+    get:
+      tags: [Comment]
+      description: Fetch a single comment
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      responses:
+        200:
+          description: "Single Comment View"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/CommentDTO"
+                      - $ref: "#/components/schemas/Timestamp"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/admin/comments/1"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+    patch:
+      security:
+        - bearerAuth: []
+      tags: [Comment]
+      description: "Partially update a comment"
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/CommentRequestBody"
+      responses:
+        200:
+          description: "Successfully Updated"
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/CommentUpdateDTO"
+        400:
+          $ref: "#/components/responses/400"
+
+        401:
+          $ref: "#/components/responses/401"
+
+        404:
+          $ref: "#/components/responses/404"
+
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      security:
+        - bearerAuth: []
+      tags: [Comment]
+      description: Delete a Comment by id
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      responses:
+        204:
+          description: "Comment deleted successfully"
+        401:
+          $ref: "#/components/responses/401"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+  "/admin/stars":
+    get:
+      operationId: findAllStars
+      description: "Retrieve all stars"
+      parameters:
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/limitParam"
+        - $ref: "#/components/parameters/sortParam"
+        - $ref: "#/components/parameters/searchParam"
+      responses:
+        200:
+          description: "Return a list of stars"
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: "#/components/schemas/StarReactDTO"
+                        - $ref: "#/components/schemas/Timestamp"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: url
+                        example: "/admin/stars?page=2&limit=10"
+                      next:
+                        type: string
+                        format: url
+                        example: "/admin/stars?page=3&limit=10"
+                      prev:
+                        type: string
+                        format: url
+                        example: "/admin/stars?page=1&limit=10"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+      tags:
+        - Star
+    post:
+      operationId: createStar
+      security:
+        - bearerAuth: []
+      tags: [Star]
+      description: Create a new Star
+      requestBody:
+        description: To create a new Star, the admin must need to provide valid data
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/StarReactRequestBody"
+      responses:
+        201:
+          description: Successfully created a new Star React
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/StarReactCreateDTO"
+        400:
+          $ref: "#/components/responses/400"
+        401:
+          $ref: "#/components/responses/401"
+        500:
+          $ref: "#/components/responses/500"
+  "/private/stars/{id}":
+    get:
+      tags: [Star]
+      description: Fetch a single star react
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      responses:
+        200:
+          description: "Single Star React View"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/StarReactDTO"
+                      - $ref: "#/components/schemas/Timestamp"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/admin/stars/1"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      security:
+        - bearerAuth: []
+      tags: [Star]
+      description: Delete a Star React by id
+      parameters:
+        - $ref: "#/components/parameters/idPathParam"
+      responses:
+        204:
+          description: "Star React deleted successfully"
+        401:
+          $ref: "#/components/responses/401"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Timestamp:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: datetime
+        updatedAt:
+          type: string
+          format: datetime
+      required: [createdAt, updatedAt]
+    ProfileDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        display_name:
+          type: string
+          example: safinahmed
+        job_title:
+          type: string
+          example: Backend Developer
+        bio:
+          type: string
+        follower_count:
+          type: integer
+          example: 100
+    ProfileCreateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 201
+        message:
+          type: string
+          example: Profile Created Successfully
+        data:
+          $ref: "#/components/schemas/ProfileDTO"
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: url
+              example: "/profiles//1"
+    ProfileUpdateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 201
+        message:
+          type: string
+          example: Profile Updated Successfully
+        data:
+          $ref: "#/components/schemas/ProfileDTO"
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: url
+              example: "/profiles//1"
+    ProfileRequestBody:
+      type: object
+      properties:
+        display_name:
+          type: string
+          example: sniper123
+        job_title:
+          type: string
+          example: "Fullstack developer"
+        bio:
+          type: string
+          example: "I do this"
+    UserDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        avatar:
+          type: string
+          format: url
+        username:
+          type: string
+          example: safinahmed
+        email:
+          type: string
+          format: email
+          example: safinahmed@gmail.com
+        role:
+          type: string
+          example: "user"
+    UserCreateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 201
+        message:
+          type: string
+          example: User Created Successfully
+        data:
+          $ref: "#/components/schemas/UserDTO"
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: url
+              example: "/users/1"
+    UserUpdateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 201
+        message:
+          type: string
+          example: User Updated Successfully
+        data:
+          $ref: "#/components/schemas/UserDTO"
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: url
+              example: "/users/1"
+    UserRequestBody:
+      type: object
+      properties:
+        username:
+          type: string
+          example: sniper123
+        avatar:
+          type: string
+        email:
+          type: string
+          example: "safin@gmail.com"
+        password:
+          type: string
+          example: "pass123"
+        role:
+          type: string
+          example: user
+      required: [username, email, password]
+    SnippetListDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "ASDASDASDASD123123"
+        snipper:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "asdads12312"
+            avatar:
+              type: string
+              format: url
+            display_name:
+              type: string
+              example: Dev Jorina
+            job_title:
+              type: string
+              example: Frontend Developer
+        title:
+          type: string
+          example: Functional Component Snippet
+        description:
+          type: string
+          example: This is a description for my snippet
+        languages:
+          type: array
+          items:
+            type: string
+        totalComments:
+          type: integer
+          format: int32
+          example: 20
+        totalStars:
+          type: integer
+          format: int32
+          example: 20
+        status:
+          type: string
+          example: Published
+    SnippetDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "ASDASDASDASD123123"
+        title:
+          type: string
+          example: Functional Component Snippet
+        description:
+          type: string
+          example: This is a description for my snippet
+        languages:
+          type: array
+          items:
+            type: string
+        totalComments:
+          type: integer
+          format: int32
+          example: 20
+        totalStars:
+          type: integer
+          format: int32
+          example: 20
+        status:
+          type: string
+          example: Published
+    SnippetRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        languages:
+          type: array
+          items:
+            type: string
+        snippet_files:
+          type: array
+          items:
+            type: string
+            example: ["asdasdasd", "asdasdasd", "asdasdasdasd"]
+        status:
+          type: string
+          enum: ["published", "draft"]
+          example: "published"
+      required: ["title"]
+    SnippetCreateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 201
+        message:
+          type: string
+          example: Snippet Created Successfully
+        data:
+          $ref: "#/components/schemas/SnippetDTO"
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: url
+              example: "/snippets/1"
+    SnippetUpdateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          type: string
+          example: Snippet Updated Successfully
+        data:
+          $ref: "#/components/schemas/SnippetDTO"
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: url
+              example: "/snippets/1"
+    CommentDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "asdasdad212easd"
+        snippet_id:
+          type: string
+          example: "asdasdads21asd"
+        profile:
+          $ref: "#/components/schemas/ProfileDTO"
+        content:
+          type: string
+    CommentCreateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 201
+        message:
+          type: string
+          example: "Comment created successfully"
+        data:
+          $ref: "#/components/schemas/CommentDTO"
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              example: "/comments/asdasdsadasd"
+            snippet:
+              type: string
+              example: "/snippets/asdasdasdasda"
+    CommentUpdateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          type: string
+          example: Comment Updated Successfully
+        data:
+          $ref: "#/components/schemas/CommentDTO"
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: url
+              example: "/admin/comments/1"
+    CommentRequestBody:
+      type: object
+      properties:
+        content:
+          type: string
+          example: "This is a comment"
+        snippet_id:
+          type: string
+          example: "asdasd123123asd"
+        profile_id:
+          type: string
+          example: "sasdasdasd213123asdas"
+      required: [content, snippet_id, profile_id]
+    StarReactDTO:
+      type: object
+      properties:
+        snippet:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "asdasdasd"
+            title:
+              type: string
+              example: "Test Snippet"
+        profile:
+          type: object
+          properties:
+            displayName:
+              type: string
+              example: sniper123
+            avatar:
+              type: string
+    StarReactCreateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 201
+        message:
+          type: string
+          example: "Star react created successfully"
+        data:
+          $ref: "#/components/schemas/StarReactDTO"
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              example: "/stars/asdasdsadasd"
+            snippet:
+              type: string
+              example: "/snippets/asdasdasdasda"
+    StarReactRequestBody:
+      type: object
+      properties:
+        snippet_id:
+          type: string
+          example: "asdasd123123asd"
+        profile_id:
+          type: string
+          example: "sasdasdasd213123asdas"
+      required: [snippet_id, profile_id]
+    SnippetFileDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "asdasd213123"
+        filename:
+          type: string
+          example: "test.js"
+        content:
+          type: string
+          example: "console.log(Hello World)"
+        language:
+          type: string
+          example: "Javascript"
+        snippet_id:
+          type: string
+          example: "asdasd213123"
+        profile_id:
+          type: string
+          example: "asdasd213123"
+    SnippetFileRequestBody:
+      type: object
+      properties:
+        filename:
+          type: string
+        content:
+          type: string
+        language:
+          type: string
+        snippet_id:
+          type: string
+      required: [filename]
+    SnippetFileCreateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 201
+        message:
+          type: string
+          example: Snippet File Created Successfully
+        data:
+          $ref: "#/components/schemas/SnippetFileDTO"
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: url
+              example: "/snippets/files/1"
+    SnippetFileUpdateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          type: string
+          example: Snippet File Updated Successfully
+        data:
+          $ref: "#/components/schemas/SnippetFileDTO"
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: url
+              example: "/snippets/files/1"
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+          example: 2
+        limit:
+          type: integer
+          format: int32
+          example: 10
+        next:
+          type: integer
+          format: int32
+          example: 3
+        prev:
+          type: integer
+          format: int32
+          example: 1
+        totalPage:
+          type: integer
+          format: int32
+          example: 5
+        totalItems:
+          type: integer
+          format: int32
+          example: 50
+      required: [page, limit, totalPage, totalItems]
+  responses:
+    "500":
+      description: "Internal Server Error"
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 500
+              error:
+                type: string
+                example: Internal Server Error
+              message:
+                type: string
+                example: We are sorry for the inconvenience. Please try again later
+    "400":
+      description: "Bad Request"
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 400
+              error:
+                type: string
+                example: Bad Request
+              data:
+                type: object
+                properties: { field: { type: "string" } }
+
+    "401":
+      description: "Unauthorized"
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 401
+              error:
+                type: string
+                example: Unauthorized
+
+    "404":
+      description: Resource not found
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 404
+              error:
+                type: string
+                example: Not Found
+              message:
+                type: string
+                example: Requested resource not found
+  parameters:
+    pageParam:
+      in: query
+      name: page
+      description: current page number
+      schema:
+        type: integer
+        format: int32
+        example: 2
+    limitParam:
+      in: query
+      name: limit
+      description: maximum items to be returned
+      schema:
+        type: integer
+        format: int32
+        example: 10
+    sortParam:
+      in: query
+      name: sort
+      description: sort the result by a property in a defined order [sortProperty:sortOrder]
+      schema:
+        type: string
+        example: "title:asc"
+    searchParam:
+      in: query
+      name: search
+      description: Search term
+      schema:
+        type: string
+        example: title
+    idPathParam:
+      in: path
+      name: id
+      required: true
+      description: Resource ID
+      schema:
+        type: integer
+        format: int32
+        example: 1

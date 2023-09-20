@@ -1,0 +1,155 @@
+### Register User
+POST http://localhost:4000/api/v1/public/auth/register
+Content-Type: application/json
+
+{
+    "username": "safinahmed",
+    "email": "safin@gmail.com",
+    "password": "SafinAhmed2021!"
+}
+
+
+### Login User
+
+POST http://localhost:4000/api/v1/public/auth/login
+Content-Type: application/json
+
+{
+    "email": "safin@gmail.com",
+    "password": "SafinAhmed2021!"
+}
+
+### Refresh Token
+POST http://localhost:4000/api/v1/public/auth/token/refresh
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MDZhOWVmNGVlMTdmNmJmNzFlMzFkNCIsInVzZXJfaWQiOiI2NGZlMTYxOWU2OGRmYzY2MzM1YmUwOGQiLCJ1c2VybmFtZSI6InNhZmluYWhtZWQiLCJlbWFpbCI6InNhZmluQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVzZXIiXSwiaWF0IjoxNjk0OTM1NTM1fQ.FtmMf-Sh2aNV3qfXMu30s0-iQQc9dXLpXL07LPcv-Nk"
+}
+
+### Validate Token
+
+POST http://localhost:4000/api/v1/public/auth/token/validate
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MDMyMDg2MWY4MTZkYmI0MTU4ZGZjNyIsInVzZXJfaWQiOiI2NGZlMTYxOWU2OGRmYzY2MzM1YmUwOGQiLCJ1c2VybmFtZSI6InNhZmluYWhtZWQiLCJlbWFpbCI6InNhZmluQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVzZXIiXSwiaWF0IjoxNjk0NzAzNzUwfQ.pCk9Sb7nIsScjSKtcK-Ov5qqkZ2kM66ZQe7Gem5GUyI"
+}
+
+### Revoke Token
+POST http://localhost:4000/api/v1/private/auth/token/revoke
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZmUxNjE5ZTY4ZGZjNjYzMzViZTA4ZCIsInVzZXJuYW1lIjoic2FmaW5haG1lZCIsImVtYWlsIjoic2FmaW5AZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJpYXQiOjE2OTQ3MDMzMDcsImV4cCI6MTY5NDcwMzYwN30.G2g7LHFv3grTF62NpX_sMkGPirxJIcUFD3IGZHN1UbI
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MDMyMDg2MWY4MTZkYmI0MTU4ZGZjNyIsInVzZXJfaWQiOiI2NGZlMTYxOWU2OGRmYzY2MzM1YmUwOGQiLCJ1c2VybmFtZSI6InNhZmluYWhtZWQiLCJlbWFpbCI6InNhZmluQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVzZXIiXSwiaWF0IjoxNjk0NzAzNzUwfQ.pCk9Sb7nIsScjSKtcK-Ov5qqkZ2kM66ZQe7Gem5GUyI"
+}
+
+
+
+
+# access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZmUxNjE5ZTY4ZGZjNjYzMzViZTA4ZCIsInVzZXJuYW1lIjoic2FmaW5haG1lZCIsImVtYWlsIjoic2FmaW5AZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJpYXQiOjE2OTQ5MzU5MDIsImV4cCI6MTY5NDkzNjIwMn0.aF6itO-JON0nma9zVg_cFmuiMuMm5IxUAsHGgw09KB0
+
+# refresh_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MDZhYjVlZjdiMzk4ODkxNTU5YWExMCIsInVzZXJfaWQiOiI2NGZlMTYxOWU2OGRmYzY2MzM1YmUwOGQiLCJ1c2VybmFtZSI6InNhZmluYWhtZWQiLCJlbWFpbCI6InNhZmluQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVzZXIiXSwiaWF0IjoxNjk0OTM1OTAyfQ.UtZEFPZmMhpbPEmnw6cGxgkJEjNnqCgIwY6K0oFvnlM
+
+
+### Get all snippets
+GET http://localhost:4000/api/v1/public/snippets?limit=1
+
+### Get single snippet
+GET http://localhost:4000/api/v1/public/snippets/650021c3b6890663e22cc358?expand=snipper
+
+
+### Create a snippet
+POST http://localhost:4000/api/v1/private/snippets
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZmUxNjE5ZTY4ZGZjNjYzMzViZTA4ZCIsInVzZXJuYW1lIjoic2FmaW5haG1lZCIsImVtYWlsIjoic2FmaW5AZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJpYXQiOjE2OTQ1MDc0MjEsImV4cCI6MTY5NDUwNzcyMX0.YchdNwJwV7H9MU5OQ-4Tod_mXmIX7IwFfujuICyvfG0
+
+{
+    "title": "Test Code Snippet 3",
+    "description": "Test Code Snippet 3 Created By EH Safin Ahmed"
+}
+
+
+### update a snippet
+PATCH http://localhost:4000/api/v1/private/snippets/650021c3b6890663e22cc358
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZmUxNjE5ZTY4ZGZjNjYzMzViZTA4ZCIsInVzZXJuYW1lIjoic2FmaW5haG1lZCIsImVtYWlsIjoic2FmaW5AZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJpYXQiOjE2OTQ5MzU5MDIsImV4cCI6MTY5NDkzNjIwMn0.aF6itO-JON0nma9zVg_cFmuiMuMm5IxUAsHGgw09KB0
+
+{
+  "totalComments": 100
+}
+
+
+### delete a snippet
+DELETE http://localhost:4000/api/v1/private/snippets/650015ba9cb9c578203e0083
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZmUxNjE5ZTY4ZGZjNjYzMzViZTA4ZCIsInVzZXJuYW1lIjoic2FmaW5haG1lZCIsImVtYWlsIjoic2FmaW5AZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJpYXQiOjE2OTQ1MDQyMTQsImV4cCI6MTY5NDUwNDUxNH0.camNVMxoDdiauSZl8WxYY7A6U4P_RpHkFGouWC6XlXY
+
+
+### Get All comments for a snippet
+GET http://localhost:4000/api/v1/public/snippets/650021c3b6890663e22cc358/comments
+
+### Post comment for a snippet
+POST http://localhost:4000/api/v1/private/snippets/650021c3b6890663e22cc358/comments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZmUxNjE5ZTY4ZGZjNjYzMzViZTA4ZCIsInVzZXJuYW1lIjoic2FmaW5haG1lZCIsImVtYWlsIjoic2FmaW5AZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJpYXQiOjE2OTQ1MTYwOTYsImV4cCI6MTY5NDUxNjM5Nn0.-qzm2lEvQ-VR0Z77bZcmhuF_XfS21FHdLS7f7a-FJhs
+
+{
+    "content": "Test Comment 3 By EH Safin"
+}
+
+### Remove a comment
+DELETE http://localhost:4000/api/v1/private/comments/650043cdc6cc3bb9cea31007
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZmUxNjE5ZTY4ZGZjNjYzMzViZTA4ZCIsInVzZXJuYW1lIjoic2FmaW5haG1lZCIsImVtYWlsIjoic2FmaW5AZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJpYXQiOjE2OTQ1MTY5MTcsImV4cCI6MTY5NDUxNzIxN30.CHCr09lYrQoMEb_ZJY3VwFbK839dwnBDNMjUMOy3af4
+
+### Get All stars for a snippet
+GET http://localhost:4000/api/v1/public/snippets/650021c3b6890663e22cc358/stars
+
+
+### Add a Star to a snippet
+POST http://localhost:4000/api/v1/private/snippets/650021c3b6890663e22cc358/stars
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZmUxNjE5ZTY4ZGZjNjYzMzViZTA4ZCIsInVzZXJuYW1lIjoic2FmaW5haG1lZCIsImVtYWlsIjoic2FmaW5AZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJpYXQiOjE2OTQ1MTgwMjUsImV4cCI6MTY5NDUxODMyNX0.SeEuM-S-ic8WF6YTQyPZLBoTV4GE3NIeyUBvzUzUzOc
+
+
+
+### Remove a star
+DELETE http://localhost:4000/api/v1/private/stars/650049608285811fcbdb2604
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZmUxNjE5ZTY4ZGZjNjYzMzViZTA4ZCIsInVzZXJuYW1lIjoic2FmaW5haG1lZCIsImVtYWlsIjoic2FmaW5AZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJpYXQiOjE2OTQ1MTgwMjUsImV4cCI6MTY5NDUxODMyNX0.SeEuM-S-ic8WF6YTQyPZLBoTV4GE3NIeyUBvzUzUzOc
+
+
+### Get all snippet files 
+GET http://localhost:4000/api/v1/public/snippets/files
+
+### Get a single snippet file by id 
+GET http://localhost:4000/api/v1/public/snippets/files/123
+
+### Create a snippet file
+POST http://localhost:4000/api/v1/private/snippets/files
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZmUxNjE5ZTY4ZGZjNjYzMzViZTA4ZCIsInVzZXJuYW1lIjoic2FmaW5haG1lZCIsImVtYWlsIjoic2FmaW5AZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJpYXQiOjE2OTQ2MDM1ODYsImV4cCI6MTY5NDYwMzg4Nn0.wdTMC7SKsYWzgSFd-POAYcZJqOsVoQyYG91JbE_jfRY
+
+{
+    "filename": "test snippet file",
+    "content": "<h1> Hello World! </h1>",
+    "language": "html"
+}
+
+### Update a snippet file
+PATCH http://localhost:4000/api/v1/private/snippets/files/650199dea198e7b303354a8b
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZmUxNjE5ZTY4ZGZjNjYzMzViZTA4ZCIsInVzZXJuYW1lIjoic2FmaW5haG1lZCIsImVtYWlsIjoic2FmaW5AZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJpYXQiOjE2OTQ2MDM1ODYsImV4cCI6MTY5NDYwMzg4Nn0.wdTMC7SKsYWzgSFd-POAYcZJqOsVoQyYG91JbE_jfRY
+
+{
+    "content":  " <h1> Hello World! This is updated </h1> <p> This is a p tag </p>",
+    "snippet": "650021c3b6890663e22cc358"
+}
+
+
+### Delete a snippet file
+DELETE http://localhost:4000/api/v1/private/snippets/files/650199dea198e7b303354a8b
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZmUxNjE5ZTY4ZGZjNjYzMzViZTA4ZCIsInVzZXJuYW1lIjoic2FmaW5haG1lZCIsImVtYWlsIjoic2FmaW5AZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJpYXQiOjE2OTQ2MDM1ODYsImV4cCI6MTY5NDYwMzg4Nn0.wdTMC7SKsYWzgSFd-POAYcZJqOsVoQyYG91JbE_jfRY
