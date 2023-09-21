@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import app from "../src/app";
-import { clearAllData, connectDB, disconnectDB } from "../src/db";
+import { connectDB, disconnectDB } from "../src/db";
 import request from "supertest";
 
 let authToken;

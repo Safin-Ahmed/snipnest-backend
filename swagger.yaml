@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   description: "This is a professional api project I am creating for our first assignment in full-stack army. This is a simple code-snippet sharing api application where anyone can create a new account, login to their system and create code snippets that will be visible publicly."
   version: "1.0.0"
-  title: "SnipNest - Where Code Find It's Nest"
+  title: "SnipNest - Where Snippets Find It's Nest"
   contact:
     name: Safin Ahmed
     url: https://safinahmed.netlify.app/
