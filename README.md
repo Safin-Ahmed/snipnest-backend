@@ -80,6 +80,14 @@ You can use config located in ./src/config folder to customize some configuratio
 
 You can also use your .env file to customize Database name, Database username or password.
 
+## Test
+
+You can run the tests for this api by running the following command in your terminal
+
+```bash
+yarn test
+```
+
 ## Contributing
 
 We welcome and appreciate contributions from the community! If you'd like to contribute to SnipNest, please follow these guidelines:
